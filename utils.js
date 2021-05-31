@@ -316,4 +316,28 @@
         }
       }
 
-      
+      // 批量删除和删除  //element
+      const delItem = (row) => {
+          const selection = this.$refs.multipleTable.selection
+          const idArr = this.getIdArr(selection)
+          const len = arguments.length
+          this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            switch (len) {
+              case 0: // 批量
+                this.delTag({ ids: idArr, type: '0' })
+                break
+              case 1: // 单个
+                const { id } = row
+                this.delTag({ ids: [id], type: '0' })
+            }
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+      }
